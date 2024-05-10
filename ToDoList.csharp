@@ -1,0 +1,134 @@
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    class ToDoTask
+    {
+        public string TaskName { get; set; }
+        public string Description { get; set; }
+
+        public ToDoTask(string taskName, string description)
+        {
+            TaskName = taskName;
+            Description = description;
+        }
+    }
+
+    static void Main(string[] args)
+    {
+        List<ToDoTask> tasks = new List<ToDoTask>();
+
+        while (true)
+        {
+            Console.WriteLine("\nChoose an option:");
+            Console.WriteLine("1. Add Task");
+            Console.WriteLine("2. Update Task Description");
+            Console.WriteLine("3. Remove Task");
+            Console.WriteLine("4. Display Tasks");
+            Console.WriteLine("5. Delete All Tasks");
+            Console.WriteLine("6. Exit");
+
+            string input = Console.ReadLine();
+
+            if (!int.TryParse(input, out int choice))
+            {
+                Console.WriteLine("Invalid input. Please enter a number.");
+                continue;
+            }
+
+            switch (choice)
+            {
+                case 1:
+                    AddTask(tasks);
+                    break;
+                case 2:
+                    UpdateTask(tasks);
+                    break;
+                case 3:
+                    RemoveTask(tasks);
+                    break;
+                case 4:
+                    DisplayTasks(tasks);
+                    break;
+                case 5:
+                    DeleteAllTasks(tasks);
+                    break;
+                case 6:
+                    Console.WriteLine("Exiting...");
+                    return;
+                default:
+                    Console.WriteLine("Invalid choice. Please enter a number between 1 and 6.");
+                    break;
+            }
+        }
+    }
+
+    static void AddTask(List<ToDoTask> tasks)
+    {
+        Console.WriteLine("Enter the task name:");
+        string taskName = Console.ReadLine();
+        Console.WriteLine("Enter the task description:");
+        string description = Console.ReadLine();
+        tasks.Add(new ToDoTask(taskName, description));
+        Console.WriteLine($"Task '{taskName}' added to the to-do list.");
+    }
+
+    static void UpdateTask(List<ToDoTask> tasks)
+    {
+        Console.WriteLine("Enter the task name to update:");
+        string taskToUpdate = Console.ReadLine();
+        Console.WriteLine("Enter the new description:");
+        string newDescription = Console.ReadLine();
+
+        foreach (var task in tasks)
+        {
+            if (task.TaskName.Equals(taskToUpdate))
+            {
+                task.Description = newDescription;
+                Console.WriteLine($"Description of task '{taskToUpdate}' updated.");
+                return;
+            }
+        }
+        Console.WriteLine($"Task '{taskToUpdate}' not found in the to-do list.");
+    }
+
+    static void RemoveTask(List<ToDoTask> tasks)
+    {
+        Console.WriteLine("Enter the task name to remove:");
+        string taskToRemove = Console.ReadLine();
+
+        for (int i = 0; i < tasks.Count; i++)
+        {
+            if (tasks[i].TaskName.Equals(taskToRemove))
+            {
+                tasks.RemoveAt(i);
+                Console.WriteLine($"Task '{taskToRemove}' removed from the to-do list.");
+                return;
+            }
+        }
+        Console.WriteLine($"Task '{taskToRemove}' not found in the to-do list.");
+    }
+
+    static void DisplayTasks(List<ToDoTask> tasks)
+    {
+        if (tasks.Count == 0)
+        {
+            Console.WriteLine("No tasks in the to-do list.");
+        }
+        else
+        {
+            Console.WriteLine("To-Do List:");
+            foreach (var task in tasks)
+            {
+                Console.WriteLine($"Task: {task.TaskName}, Description: {task.Description}");
+            }
+        }
+    }
+
+    static void DeleteAllTasks(List<ToDoTask> tasks)
+    {
+        tasks.Clear();
+        Console.WriteLine("All tasks deleted from the to-do list.");
+    }
+}
